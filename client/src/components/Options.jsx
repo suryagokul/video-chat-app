@@ -75,7 +75,7 @@ export default function Options({ children }) {
                     fullWidth
                     startIcon={<Assignment fontSize="large" />}
                   >
-                    Copy Your ID
+                    Copy Your ID {me}
                   </Button>
                 </CopyToClipboard>
               </Grid>

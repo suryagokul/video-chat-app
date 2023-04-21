@@ -8,6 +8,7 @@ const socket = io("https://video-chat-app-ri6j.onrender.com/");
 
 const ContextProvider = ({ children }) => {
   const [stream, setStream] = useState(null);
+  const [screenStream, setScreenStream] = useState(null); // new state to hold screen stream
   const [me, setMe] = useState("");
   const [call, setCall] = useState({});
   const [callAccepted, setCallAccepted] = useState(false);
@@ -38,6 +39,37 @@ const ContextProvider = ({ children }) => {
       setCall({ isReceivingCall: true, from, name: callerName, signal });
     });
   }, []);
+
+  // Function to capture screen stream
+  const shareScreen = () => {
+    navigator.mediaDevices
+      .getDisplayMedia({ video: true })
+      .then((screenStream) => {
+        setScreenStream(screenStream);
+        // Replace video track with screen track in all peer connections
+        connectionRef.current.replaceTrack(
+          stream.getVideoTracks()[0],
+          screenStream.getVideoTracks()[0],
+          stream
+        );
+        // Set screen stream as source of local video element
+        myVideo.current.srcObject = screenStream;
+      })
+      .catch((error) => console.error("Error sharing screen:", error));
+  };
+
+  // Function to stop sharing screen
+  const stopSharingScreen = () => {
+    setScreenStream(null);
+    // Replace screen track with video track in all peer connections
+    connectionRef.current.replaceTrack(
+      screenStream.getVideoTracks()[0],
+      stream.getVideoTracks()[0],
+      stream
+    );
+    // Set camera stream as source of local video element
+    myVideo.current.srcObject = stream;
+  };
 
   const answerCall = () => {
     setCallAccepted(true);
@@ -105,6 +137,9 @@ const ContextProvider = ({ children }) => {
         myVideo,
         userVideo,
         stream,
+        screenStream,
+        shareScreen,
+        stopSharingScreen,
         name,
         setName,
         callEnded,

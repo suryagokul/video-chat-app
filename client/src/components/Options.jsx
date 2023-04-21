@@ -55,9 +55,6 @@ export default function Options({ children }) {
     leaveCall,
     callUser,
     stream,
-    screenStream,
-    shareScreen,
-    stopSharingScreen,
   } = useContext(SocketContext);
   const [idToCall, setIdToCall] = useState("");
   const classes = useStyles();
@@ -123,14 +120,6 @@ export default function Options({ children }) {
                   >
                     Call
                   </Button>
-                )}
-                {stream && (
-                  <button
-                    onClick={screenStream ? stopSharingScreen : shareScreen}
-                    className="screen-share-button"
-                  >
-                    {screenStream ? "Stop Sharing" : "Share Screen"}
-                  </button>
                 )}
               </Grid>
             </div>

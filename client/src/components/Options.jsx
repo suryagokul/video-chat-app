@@ -46,16 +46,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Options({ children }) {
-  const {
-    me,
-    callAccepted,
-    name,
-    setName,
-    callEnded,
-    leaveCall,
-    callUser,
-    stream,
-  } = useContext(SocketContext);
+  const { me, callAccepted, name, setName, callEnded, leaveCall, callUser } =
+    useContext(SocketContext);
   const [idToCall, setIdToCall] = useState("");
   const classes = useStyles();
 

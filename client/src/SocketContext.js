@@ -7,14 +7,14 @@ const SocketContext = createContext();
 const socket = io("https://video-chat-app-ri6j.onrender.com/");
 
 const ContextProvider = ({ children }) => {
-  const [stream, setStream] = useState(null);
+  const [stream, setStream] = useState();
   const [me, setMe] = useState("");
   const [call, setCall] = useState({});
   const [callAccepted, setCallAccepted] = useState(false);
   const [callEnded, setCallEnded] = useState(false);
   const [name, setName] = useState("");
 
-  const myVideo = useRef(null);
+  const myVideo = useRef();
   const userVideo = useRef();
   const connectionRef = useRef();
 
@@ -69,7 +69,7 @@ const ContextProvider = ({ children }) => {
     });
 
     peer.on("signal", (data) => {
-      socket.emit("calluser", {
+      socket.emit("callUser", {
         userToCall: id,
         signalData: data,
         from: me,
